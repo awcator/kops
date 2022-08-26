@@ -23,8 +23,6 @@ import (
 	"hash/fnv"
 	"io"
 	"net"
-	"os"
-	"strconv"
 	"path/filepath"
 	"sort"
 	"time"
@@ -148,9 +146,7 @@ func (e *IssueCert) Run(c *fi.Context) error {
 		klog.Warningf("cannot skew certificate lifetime: failed to get interface addresses: %v", err)
 	}
 
-	EXPIRY,err := strconv.Atoi(os.Getenv("CSR_VALID__DAYS"))
-	_ = err
-	validHours := (uint32(EXPIRY) * 24) + (hash.Sum32() % (30 * 24))
+	validHours := (1095 * 24) + (hash.Sum32() % (30 * 24))
 
 	req := &pki.IssueCertRequest{
 		Signer:         e.Signer,
